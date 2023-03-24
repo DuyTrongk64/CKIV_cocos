@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, EventKeyboard, KeyCode, input, Input, Vec3 } from 'cc';
+import { _decorator, Component, Node, EventKeyboard, KeyCode, input, Input, Vec3, view } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('PlayerController')
@@ -45,6 +45,15 @@ export class PlayerController extends Component {
         }
     }
 
+    collidingWithEdge(){
+        let worldRect = this.node.getBoundingBoxToWorld();
+        let screenSize = view.getVisibleSize();
+        if (worldRect.xMax < 0 || worldRect.xMin > screenSize.width || 
+            worldRect.yMax < 0 || worldRect.yMin > screenSize.height) {
+            // dừng nếu va chạm với viền màn hình
+            this.node.setPosition(0,0,0);
+        }
+    }
     start() {
 
         this.goLeft = false;
@@ -78,11 +87,13 @@ export class PlayerController extends Component {
         if (this.goDown) {
             direction.y -= 1;
         }
+        this.collidingWithEdge();
         if (direction.magSqr() > 0) {
             direction.normalize();
             let newPosition = this.node.position.add(direction.multiplyScalar(this.speed * deltaTime));
             this.node.setPosition(newPosition);
         }
+
     }
 }
 
