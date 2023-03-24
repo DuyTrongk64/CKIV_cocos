@@ -46,13 +46,18 @@ export class PlayerController extends Component {
     }
 
     collidingWithEdge(){
-        let worldRect = this.node.getBoundingBoxToWorld();
-        let screenSize = view.getVisibleSize();
-        if (worldRect.xMax < 0 || worldRect.xMin > screenSize.width || 
-            worldRect.yMax < 0 || worldRect.yMin > screenSize.height) {
-            // dừng nếu va chạm với viền màn hình
-            this.node.setPosition(0,0,0);
-        }
+        //let size = this.node.getContentSize();
+        let curPos = this.node.getPosition();
+        let visibleSize = view.getVisibleSize();
+        let x = curPos.x;
+        let y = curPos.y;
+        
+        x = Math.min(x, visibleSize.width);
+        x = Math.max(x, -visibleSize.width);
+        y = Math.min(y, visibleSize.height);
+        y = Math.max(y, -visibleSize.height);
+    
+        this.node.setPosition(x, y);
     }
     start() {
 
