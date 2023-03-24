@@ -68,6 +68,7 @@ export class PlayerController extends Component {
 
         this.speed = 500;
         
+        console.log('noob');
         input.on(Input.EventType.KEY_DOWN, this.onKeyDown, this);
 
         input.on(Input.EventType.KEY_UP, this.onKeyUp, this);
